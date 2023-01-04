@@ -5,6 +5,8 @@ import numpy as np
 import os
 
 def main():
+    ser = serial.Serial("COM3", baudrate=9600)
+    
     path = os.path.abspath(os.path.dirname(__file__))
     filename = "keras_model.h5"
     label = []
@@ -23,7 +25,6 @@ def main():
     fps = cap.get(cv2.CAP_PROP_FPS)
     dt = int(1000/fps)
 
-    ser = serial.Serial("COM3", baudrate=9600)
 
     while True:
         ret, frame = cap.read()
