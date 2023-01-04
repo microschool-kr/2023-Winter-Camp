@@ -8,14 +8,12 @@ img_file = os.path.join(path, file_name)
 # 이미지 데이터를 img라는 변수에 저장
 img = cv2.imread(img_file)
 
-# 이미지 데이터 프린트
-print(img)
-
-# 이미지를 흑백으로 전환하고, img_gray라는 변수에 저장
-img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-
-
 if img is not None: # 이미지파일 있으면 아래 실행
+    # 이미지 데이터 프린트
+    print(img)
+
+    # 이미지를 흑백으로 전환하고, img_gray라는 변수에 저장
+    img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     cv2.imshow('original', img)     # 원본 이미지 보이기
     cv2.imshow('gray', img_gray)    # 흑백 이미지 보이기
     
