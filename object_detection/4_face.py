@@ -1,6 +1,5 @@
 import cv2
 import os
-import sys
 
 path = os.path.abspath(os.path.dirname(__file__))
 file_name = "haarcascade_frontalface_default.xml"
@@ -12,11 +11,6 @@ face_cascade = cv2.CascadeClassifier(cascade_file)
 
 # 동영상을 받아올 카메라 선언 및 설정 (0인덱스가 내장 카메라, 1이 웹캠)
 capture = cv2.VideoCapture(0)
-
-if not cap.isOpened():
-    print("Fail to open camera!")
-    sys.exit()
-
 capture.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
 capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 360)
 fps = capture.get(cv2.CAP_PROP_FPS)
