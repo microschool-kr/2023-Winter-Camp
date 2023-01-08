@@ -9,7 +9,7 @@ cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480) # 세로
 fps = capture.get(cv2.CAP_PROP_FPS)
 dt = int(1000/fps)
 
-while (True):
+while True:
     _, frame = cap.read()  # 카메라로부터 현재 영상을 받아 frame에 저장
 
     # Lab 색상 공간으로 변경, a 채널을 이용하여 빨간색을 찾을 수 있음
