@@ -19,7 +19,7 @@ void setup() {
   pinMode(IR_M, INPUT);
   pinMode(IR_R, INPUT);
   Serial.begin(9600);
-  Serial.print("Success");
+  Serial.print("Start");
 }
 
 
