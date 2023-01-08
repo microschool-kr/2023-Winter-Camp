@@ -1,31 +1,37 @@
 import cv2
 import os
+import sys
 
 path = os.path.abspath(os.path.dirname(__file__))
 file_name = "haarcascade_frontalface_default.xml"
 cascade_file = os.path.join(path, file_name)
 
-# Cascade Classifier xml
+# Cascade Classifier 선언
 face_cascade = cv2.CascadeClassifier(cascade_file)
 
 
-# 내장 카메라가 인덱스 0, USB로 연결한 웹캠은 인덱스 1로 하면 됩니다
-cap = cv2.VideoCapture(0)
-cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 360)
+# 동영상을 받아올 카메라 선언 및 설정 (0인덱스가 내장 카메라, 1이 웹캠)
+capture = cv2.VideoCapture(0)
 
-while cap.isOpened():
-    _, img = cap.read()
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+if not cap.isOpened():
+    print("Fail to open camera!")
+    sys.exit()
+
+capture.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 360)
+fps = capture.get(cv2.CAP_PROP_FPS)
+dt = int(1000/fps)
+
+while True:
+    _, frame = capture.read()
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     faces = face_cascade.detectMultiScale(gray, 1.1, 4)
-
-    is_stop = False
 
     # Draw the rectangle around each face
     if len(faces):
         for (x, y, w, h) in faces:
             face_rectangle = cv2.rectangle(
-                img, (x, y), (x+w, y+h), (255, 0, 0), 2)
+                frame, (x, y), (x+w, y+h), (255, 0, 0), 2)
 
             Face_text = cv2.putText(img=face_rectangle,
                                     text="Face",
@@ -34,12 +40,12 @@ while cap.isOpened():
                                     fontScale=1, color=(0, 0, 255),
                                     thickness=2, lineType=cv2.LINE_4)
 
-            print(f"Face")
+            print("Face")
 
-    cv2.imshow("img", img)
+    cv2.imshow("cam", frame)
 
-    key = cv2.waitKey(30)
-    if key == ord('q'):
-        cap.release()
-        cv2.destroyAllWindows()
+    if cv2.waitKey(dt) & 0xFF == ord('q'):
         break
+        
+capture.release()
+cv2.destroyAllWindows()
