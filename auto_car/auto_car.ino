@@ -8,9 +8,11 @@ const int IR_L = A5;
 int IR_L_data;
 int IR_M_data;
 int IR_R_data;
-const int initial_speed = 250;
-int speed;
+int speed = 250;
+int slow_speed = 250 / 3;
 char ch;
+int cnt;
+int i;
 
 void setup() {
   pinMode(motor_A1, OUTPUT);
@@ -21,8 +23,7 @@ void setup() {
   pinMode(IR_M, INPUT);
   pinMode(IR_R, INPUT);
   Serial.begin(9600);
-  Serial.println("Success");
-  speed = initial_speed;
+  Serial.println("Start");
 }
 
 
@@ -36,84 +37,102 @@ void loop() {
   Serial.print(IR_M_data);
   Serial.print("-");
   Serial.println(IR_R_data);
-
-  line_tracer();
-
+  
   // 객체 탐지 결과 시리얼 통신으로 받기
-  if (Serial.available()) {
-    ch = Serial.read();
+  cnt = Serial.available();
+  if (cnt) { 
+    for (i = 0; i < cnt; i++) {
+      ch = Serial.read();
+    }
   }
+  
   // STOP
   if (ch == '0') {
-    speed = 0;
+    stop();
   }
   // PERSON
   else if (ch == '1') {
-    speed = 0;
+    stop();
   }
   // NONE
   else if (ch == '2') {
-    speed = 250;
+    if (IR_L_data == 0 and IR_M_data == 1 and IR_R_data == 0) {
+      forward();
+      Serial.print("forward");
+    }
+    else if (IR_L_data == 1 and IR_M_data == 1 and IR_R_data == 0) {
+      left_soft();
+      Serial.print("left_soft");
+    }
+    else if (IR_L_data == 1 and IR_M_data == 0 and IR_R_data == 0) {
+      left();
+      Serial.print("left");
+    }
+    else if (IR_L_data == 0 and IR_M_data == 1 and IR_R_data == 1) {
+      right();
+      Serial.print("right_soft");
+    }
+    else if (IR_L_data == 0 and IR_M_data == 0 and IR_R_data == 1) {
+      right();
+      Serial.print("right");
+    }
+    else if (IR_L_data == 1 and IR_M_data == 1 and IR_R_data == 1) {
+      stop();
+      Serial.print("stop");
+    }    
   }
-}
-
-
-
-void line_tracer() {
-  // 2IR sensor
-  if (IR_L_data == 0 and IR_R_data == 0) {
-    Serial.println("직진");
-    forward();
-  }
-  else if (IR_L_data == 1 and IR_R_data == 0) {
-    Serial.println("좌회전 ");
-    left();
-  }
-  else if (IR_L_data == 0 and IR_R_data == 1) {
-    Serial.println("우회전");
-    right();
-  }
-  else if (IR_L_data == 1 and IR_R_data == 1) {
-    Serial.println("정지");
-    stop();
-  }
-}
-
-void right () {
-  //우
-  analogWrite(motor_A1, speed);
-  analogWrite(motor_A2, 0);
-  analogWrite(motor_B1, 0);
-  analogWrite(motor_B2, 0);
-}
-
-void left() {
-  //좌
-  analogWrite(motor_A1, 0);
-  analogWrite(motor_A2, 0);
-  analogWrite(motor_B1, speed);
-  analogWrite(motor_B2, 0);
 }
 
 void forward() {
   //전진
-  analogWrite(motor_A1, speed);
-  analogWrite(motor_A2, 0);
-  analogWrite(motor_B1, speed);
-  analogWrite(motor_B2, 0);
+  motor_con(speed, speed);
 }
-
+void left_soft() {
+  //왼쪽
+  motor_con(slow_speed, speed);
+}
+void left() {
+  //왼쪽
+  motor_con(0, speed);
+}
+void right() {
+  //오른쪽
+  motor_con(speed, 0);
+}
+void right_soft() {
+  //오른쪽
+  motor_con(speed, slow_speed);
+}
 void backward() {
   //후진
-  analogWrite(motor_A1, 0);
-  analogWrite(motor_A2, speed);
-  analogWrite(motor_B1, 0);
-  analogWrite(motor_B2, speed);
+  motor_con(-speed, -speed);
+}
+void stop() {
+  //정지
+  motor_con(0, 0);
 }
 
-void stop() {
-  analogWrite(motor_A1, 0);
-  analogWrite(motor_A2, 0);
-  analogWrite(motor_B1, 0);
-  analogWrite(motor_B2, 0);
+void motor_con(int pwmA, int pwmB) {
+  // MOTOR A direction
+  if (pwmA > 0) {
+    analogWrite(motor_A1, abs(pwmA));
+    analogWrite(motor_A2, LOW);
+  } else if (pwmA < 0) {
+    analogWrite(motor_A1, LOW);
+    analogWrite(motor_A2, abs(pwmA));
+  } else {
+    digitalWrite(motor_A1, LOW);
+    digitalWrite(motor_A2, LOW);
+  }
+  // MOTOR B direction
+  if (pwmB > 0) {
+    analogWrite(motor_B1, abs(pwmB));
+    analogWrite(motor_B2, LOW);
+  } else if (pwmB < 0) {
+    analogWrite(motor_B1, LOW);
+    analogWrite(motor_B2, abs(pwmB));
+  } else {
+    digitalWrite(motor_B1, LOW);
+    digitalWrite(motor_B2, LOW);
+  }
 }
