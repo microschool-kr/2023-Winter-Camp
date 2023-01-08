@@ -1,7 +1,7 @@
-const int motor_A1 = 9;
-const int motor_A2 = 10;
-const int motor_B1 = 5;
-const int motor_B2 = 6;
+const int motor_A1 = 5;
+const int motor_A2 = 6;
+const int motor_B1 = 9;
+const int motor_B2 = 10;
 const int IR_R = A1;
 const int IR_M = A3;
 const int IR_L = A5;
@@ -19,7 +19,7 @@ void setup() {
   pinMode(IR_M, INPUT);
   pinMode(IR_R, INPUT);
   Serial.begin(9600);
-  Serial.print("Success");
+  Serial.print("Start");
   delay(1000);
 }
 
