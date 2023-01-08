@@ -13,7 +13,7 @@ dt = int(1000/fps)
 n = 1
 # 무한반복문
 while True:
-    _, frame = capture.read()     # 카메라로부터 현재 영상을 받아 frame에 저장, 잘 받았다면 ret가 참
+    _, frame = capture.read()     # 카메라로부터 현재 영상을 받아 frame에 저장
     cv2.imshow("cam", frame)        # frame(카메라 영상)을 cam 이라는 창에 띄워줌
 
     key = cv2.waitKey(dt) & 0xFF
