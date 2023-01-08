@@ -58,7 +58,7 @@ def main():
             ser.write(b'2')
         print(idx)
 
-        if cv2.waitKey(dt) & 0xFF == 27:
+        if cv2.waitKey(dt) & 0xFF == ord('q'):
             ser.write(b'0')
             print("end")
             break
