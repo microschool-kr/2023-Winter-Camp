@@ -50,8 +50,6 @@ void loop() {
   else if (IR_L_data == 1  and IR_R_data == 1) {
     Serial.println("  ");
   }
-  
-  delay(100);
 }
 
 
