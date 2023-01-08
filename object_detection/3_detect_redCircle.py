@@ -2,15 +2,15 @@ import numpy as np
 import cv2
 
 # 동영상을 받아올 카메라 선언 및 설정 (0인덱스가 내장 카메라, 1이 웹캠)
-cap = cv2.VideoCapture(0)
+capture = cv2.VideoCapture(0)
 # 영상 가로, 세로 사이즈 설정
-cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640) # 가로
-cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480) # 세로
+capture.set(cv2.CAP_PROP_FRAME_WIDTH, 640) # 가로
+capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 480) # 세로
 fps = capture.get(cv2.CAP_PROP_FPS)
 dt = int(1000/fps)
 
 while True:
-    _, frame = cap.read()  # 카메라로부터 현재 영상을 받아 frame에 저장
+    _, frame = capture.read()  # 카메라로부터 현재 영상을 받아 frame에 저장
 
     # Lab 색상 공간으로 변경, a 채널을 이용하여 빨간색을 찾을 수 있음
     frame_lab = cv2.cvtColor(frame, cv2.COLOR_BGR2Lab)
@@ -39,5 +39,5 @@ while True:
         break
 
 
-cap.release()   # 캡처 객체를 없앰
+capture.release()   # 캡처 객체를 없앰
 cv2.destroyAllWindows() # 모든 창 닫음
