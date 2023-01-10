@@ -9,7 +9,7 @@ print(path)
 # Cascade Classifier xml
 stop_sign = cv2.CascadeClassifier(cascade_file)
 
-# 내장 카메라가 인덱스 0, USB로 연결한 웹캠은 인덱스 1로 하면 됩니다
+# 동영상을 받아올 카메라 선언 및 설정 (0인덱스가 내장 카메라, 1이 웹캠)
 capture = cv2.VideoCapture(0)
 capture.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
 capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 360)
@@ -35,7 +35,6 @@ while True:
                                          fontFace=cv2.FONT_HERSHEY_SIMPLEX,
                                          fontScale=1, color=(0, 0, 255),
                                          thickness=2, lineType=cv2.LINE_4)
-            # send string to arduino
             print("Stop Sign")
 
             
