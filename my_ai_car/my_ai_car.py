@@ -22,7 +22,7 @@ dt = int(1000/fps)
 
 
 while True:
-    _, frame = cap.read()
+    _, frame = capture.read()
 
     frame_resized = cv2.resize(frame, (224, 224), interpolation=cv2.INTER_AREA)
     frame_normalized = (frame_resized.astype(np.float32) / 127.0) - 1
