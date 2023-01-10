@@ -13,6 +13,8 @@ stop_sign = cv2.CascadeClassifier(cascade_file)
 capture = cv2.VideoCapture(0)
 capture.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
 capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 360)
+fps = capture.get(cv2.CAP_PROP_FPS)
+dt = int(1000/fps)
 
 while True:
     _, frame = capture.read()
@@ -43,5 +45,5 @@ while True:
     if cv2.waitKey(dt) & 0xFF == ord('q'):
         break
         
-cap.release()
+capture.release()
 cv2.destroyAllWindows()
