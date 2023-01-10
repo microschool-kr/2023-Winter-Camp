@@ -11,7 +11,7 @@ filename = "keras_model.h5"
 label = []
 with open(os.path.join(path, "labels.txt")) as f:
     for line in f.readlines():
-        label.append(line.split()[1].strip())
+        label.append(' '.join(line.split()[1:]).strip())
 
 model = tensorflow.keras.models.load_model(os.path.join(path, filename))
 
